@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>도담마루 도서관 월 출석부 (v4.6.1)</title>
+    <title>도담마루 도서관 월 출석부 (v4.6.2)</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanGothic.woff');
 
@@ -50,9 +50,12 @@
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: space-around;
             align-items: center;
             transition: opacity 0.5s ease-in-out;
+        }
+
+        #date-display-section {
+             justify-content: space-around;
         }
 
         .display-hidden { opacity: 0; pointer-events: none; }
@@ -84,10 +87,11 @@
         #time-display-section {
             color: #6b7280; /* 그레이 색상 */
             font-weight: bold;
-            width: 90%;
-            display: flex;
             align-items: baseline;
-            justify-content: flex-end; /* 우측 정렬 */
+            justify-content: flex-end; /* 가로 우측 정렬 */
+            align-items: flex-end;   /* 세로 하단 정렬 */
+            padding: 0 2vw 1vh 0;
+            box-sizing: border-box;
             gap: 1vw;
         }
         .time-main {
@@ -372,7 +376,7 @@
             // =================================================================================
             // 1. 앱 설정 및 상수
             // =================================================================================
-            const APP_VERSION = "4.6.1";
+            const APP_VERSION = "4.6.2";
             const gachaHTML = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>뽑기</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;margin:0;background-color:#f0f4f8;overflow:hidden}.gacha-container{text-align:center;background:#fff;padding:2vh 2vw;border-radius:20px;width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}h1{color:#d9534f;font-size:clamp(2em, 5vh, 3em);margin:0 0 2vh 0}.gacha-machine{width:80%;max-width:300px;height:50vh;max-height:400px;background-image:url(https://i.pinimg.com/1200x/ea/8f/81/ea8f81f6ae8d02a0f1731b93e9ffaad7.jpg);background-size:contain;background-repeat:no-repeat;background-position:center;margin:2vh auto}.gacha-button{padding:2vh 4vw;font-size:clamp(1em, 3vh, 1.5em);font-weight:700;color:#fff;background-color:#5cb85c;border:none;border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:0 4px 6px rgba(0,0,0,.1)}.gacha-button:active{transform:scale(.98)}#gacha-ball{position:absolute;left:50%;transform:translateX(-50%);width:clamp(150px, 30vh, 250px);height:clamp(150px, 30vh, 250px);border-radius:50%;box-shadow:0 4px 8px rgba(0,0,0,.2);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:clamp(1em, 2.5vh, 1.2em);font-weight:700;color:#fff;padding:10px;box-sizing:border-box;cursor:pointer}@keyframes fall-and-reveal{0%{top:20%;transform:translateX(-50%) scale(.5);opacity:0}100%{top:70%;transform:translateX(-50%) scale(1);opacity:1}}.animate-ball{animation:fall-and-reveal 5s forwards}<\/style><script src="https://cdn.jsdelivr.net/npm/tone@14.7.58/build/Tone.js"><\/script><\/head><body><div class="gacha-container"><h1>꽝 없는 뽑기 기계<\/h1><div class="gacha-machine"><\/div><button id="gacha-button" class="gacha-button">뽑기!<\/button><div id="gacha-ball"><\/div><\/div><script>const items=['1등 상품: 멋진 상품','2등 상품: 상품권','3등 당첨: 할인쿠폰','4등 당첨: 작은 선물','5등 당첨: 커피 쿠폰','축하합니다! 사탕 획득','특별상: 초콜릿 교환권','행운상: 마이쮸','행복상: 젤리','대박상: 과자 세트','아이템 1','아이템 2','아이템 3','아이템 4','아이템 5','아이템 6','아이템 7','아이템 8','아이템 9','아이템 10','아이템 11','아이템 12','아이템 13','아이템 14','아이템 15','아이템 16','아이템 17','아이템 18','아이템 19','아이템 20','아이템 21','아이템 22','아이템 23'];const ballColors=['#ff6347','#ffb6c1','#add8e6','#90ee90','#ffa07a','#c0c0c0','#d8bfd8','#f0e68c'];const synth=new Tone.NoiseSynth({noise:{type:"brown"},envelope:{attack:.02,decay:.2,sustain:.05}}).toDestination();const ball=document.getElementById('gacha-ball'),button=document.getElementById('gacha-button');let isAnimating=!1;async function drawItem(){if(isAnimating)return;isAnimating=!0;await Tone.start();ball.style.backgroundColor=ballColors[Math.floor(Math.random()*ballColors.length)];ball.style.display='flex';ball.innerText='';synth.triggerAttackRelease("3s");ball.classList.remove('animate-ball');void ball.offsetWidth;ball.classList.add('animate-ball');button.disabled=!0;setTimeout(()=>{const selectedItem=items[Math.floor(Math.random()*items.length)];ball.innerText=\`🎉 축하합니다! \${selectedItem} 당첨! 🎉\`;button.disabled=!1;isAnimating=!1},5e3)}button.addEventListener('click',drawItem);ball.addEventListener('click',()=>{if(!isAnimating)ball.style.display='none'});<\/script><\/body><\/html>`;
             
             // DOM Elements
@@ -682,7 +686,7 @@
                 const hours = now.getHours();
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 const ampm = hours >= 12 ? '오후' : '오전';
-                const displayHours = hours % 12 || 12; // 0시가 아닌 12시로 표시, 0으로 시작하지 않음
+                const displayHours = hours % 12 || 12;
                 timeDisplaySection.innerHTML = `
                     <span class="time-icon">🕒</span>
                     <span class="time-sub">${ampm}</span>
