@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>도담마루 도서관 월 출석부 (v4.6.2)</title>
+    <title>도담마루 도서관 월 출석부 (v4.6.3)</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanGothic.woff');
 
@@ -33,78 +33,11 @@
             flex-direction: column;
         }
 
-        #top-display-container {
-            padding: 1.5vh 2vw;
-            background-color: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
+        #announcement-area {
+            height: 15vh; /* 상단 여백 공간 높이 */
             flex-shrink: 0;
-            position: relative;
-            height: 28vh; /* 고정 높이 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .display-view {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        #date-display-section {
-             justify-content: space-around;
-        }
-
-        .display-hidden { opacity: 0; pointer-events: none; }
-        .display-visible { opacity: 1; }
-
-        .date-box { text-align: center; }
-        .date-box h2 {
-            font-size: clamp(24px, 4vh, 40px);
-            margin: 0 0 1vh 0;
-        }
-        .date-content {
-            display: flex;
-            align-items: baseline;
-            line-height: 1;
-        }
-        .date-number {
-            font-size: clamp(50px, 12vh, 110px);
-            font-weight: bold;
-        }
-        .date-text {
-            font-size: clamp(24px, 4vh, 40px);
-            margin: 0 1vw;
-        }
-        .loan-date h2 { color: #16a34a; }
-        .loan-date .date-number { color: #15803d; }
-        .return-date h2 { color: #f97316; }
-        .return-date .date-number { color: #c2410c; }
-        
-        #time-display-section {
-            color: #6b7280; /* 그레이 색상 */
-            font-weight: bold;
-            align-items: baseline;
-            justify-content: flex-end; /* 가로 우측 정렬 */
-            align-items: flex-end;   /* 세로 하단 정렬 */
-            padding: 0 2vw 1vh 0;
-            box-sizing: border-box;
-            gap: 1vw;
-        }
-        .time-main {
-            font-size: clamp(80px, 20vh, 180px);
-            line-height: 1;
-        }
-        .time-sub {
-            font-size: clamp(24px, 6vh, 48px);
-            padding-bottom: 2vh;
-        }
-        .time-icon {
-            font-size: clamp(40px, 10vh, 80px);
-            padding-bottom: 1.5vh;
+            border-bottom: 2px solid var(--border-color);
+            background-color: #f8fafc;
         }
 
         .container {
@@ -231,6 +164,80 @@
         .gift-btn:hover:not(:disabled) { transform: translateY(-2px); }
         .gift-btn:disabled { background-color: #9ca3af; cursor: not-allowed; box-shadow: none; }
 
+        #bottom-display-container {
+            padding: 1.5vh 2vw;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            position: relative;
+            height: 25vh; /* 고정 높이 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .display-view {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #date-display-section {
+             justify-content: space-around;
+        }
+
+        .display-hidden { opacity: 0; pointer-events: none; }
+        .display-visible { opacity: 1; }
+
+        .date-box { text-align: center; }
+        .date-box h2 {
+            font-size: clamp(24px, 4vh, 40px);
+            margin: 0 0 1vh 0;
+        }
+        .date-content {
+            display: flex;
+            align-items: baseline;
+            line-height: 1;
+        }
+        .date-number {
+            font-size: clamp(50px, 12vh, 110px);
+            font-weight: bold;
+        }
+        .date-text {
+            font-size: clamp(24px, 4vh, 40px);
+            margin: 0 1vw;
+        }
+        .loan-date h2 { color: #16a34a; }
+        .loan-date .date-number { color: #15803d; }
+        .return-date h2 { color: #f97316; }
+        .return-date .date-number { color: #c2410c; }
+        
+        #time-display-section {
+            color: #6b7280; /* 그레이 색상 */
+            font-weight: bold;
+            align-items: baseline;
+            justify-content: flex-end; /* 가로 우측 정렬 */
+            align-items: flex-end;   /* 세로 하단 정렬 */
+            padding: 0 2vw 1vh 0;
+            box-sizing: border-box;
+            gap: 1vw;
+        }
+        .time-main {
+            font-size: clamp(80px, 18vh, 160px);
+            line-height: 1;
+        }
+        .time-sub {
+            font-size: clamp(24px, 5vh, 40px);
+            padding-bottom: 2vh;
+        }
+        .time-icon {
+            font-size: clamp(40px, 8vh, 70px);
+            padding-bottom: 1.5vh;
+        }
+
         .modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
@@ -266,21 +273,7 @@
     <style id="dynamic-styles"></style>
 </head>
 <body>
-    <div id="top-display-container">
-        <div id="date-display-section" class="display-view display-visible">
-            <div class="date-box loan-date">
-                <h2>도서 대출일</h2>
-                <div id="loan-date-container" class="date-content"></div>
-            </div>
-            <div class="date-box return-date">
-                <h2>도서 반납일</h2>
-                <div id="return-date-container" class="date-content"></div>
-            </div>
-        </div>
-        <div id="time-display-section" class="display-view display-hidden">
-            <!-- Current time will be injected here -->
-        </div>
-    </div>
+    <div id="announcement-area"></div>
 
     <div class="container">
         <header>
@@ -300,6 +293,22 @@
         </header>
         
         <div id="chart-container"></div>
+    </div>
+
+    <div id="bottom-display-container">
+        <div id="date-display-section" class="display-view display-visible">
+            <div class="date-box loan-date">
+                <h2>도서 대출일</h2>
+                <div id="loan-date-container" class="date-content"></div>
+            </div>
+            <div class="date-box return-date">
+                <h2>도서 반납일</h2>
+                <div id="return-date-container" class="date-content"></div>
+            </div>
+        </div>
+        <div id="time-display-section" class="display-view display-hidden">
+            <!-- Current time will be injected here -->
+        </div>
     </div>
 
     <!-- Modals -->
@@ -376,7 +385,7 @@
             // =================================================================================
             // 1. 앱 설정 및 상수
             // =================================================================================
-            const APP_VERSION = "4.6.2";
+            const APP_VERSION = "4.6.3";
             const gachaHTML = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>뽑기</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;margin:0;background-color:#f0f4f8;overflow:hidden}.gacha-container{text-align:center;background:#fff;padding:2vh 2vw;border-radius:20px;width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}h1{color:#d9534f;font-size:clamp(2em, 5vh, 3em);margin:0 0 2vh 0}.gacha-machine{width:80%;max-width:300px;height:50vh;max-height:400px;background-image:url(https://i.pinimg.com/1200x/ea/8f/81/ea8f81f6ae8d02a0f1731b93e9ffaad7.jpg);background-size:contain;background-repeat:no-repeat;background-position:center;margin:2vh auto}.gacha-button{padding:2vh 4vw;font-size:clamp(1em, 3vh, 1.5em);font-weight:700;color:#fff;background-color:#5cb85c;border:none;border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:0 4px 6px rgba(0,0,0,.1)}.gacha-button:active{transform:scale(.98)}#gacha-ball{position:absolute;left:50%;transform:translateX(-50%);width:clamp(150px, 30vh, 250px);height:clamp(150px, 30vh, 250px);border-radius:50%;box-shadow:0 4px 8px rgba(0,0,0,.2);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:clamp(1em, 2.5vh, 1.2em);font-weight:700;color:#fff;padding:10px;box-sizing:border-box;cursor:pointer}@keyframes fall-and-reveal{0%{top:20%;transform:translateX(-50%) scale(.5);opacity:0}100%{top:70%;transform:translateX(-50%) scale(1);opacity:1}}.animate-ball{animation:fall-and-reveal 5s forwards}<\/style><script src="https://cdn.jsdelivr.net/npm/tone@14.7.58/build/Tone.js"><\/script><\/head><body><div class="gacha-container"><h1>꽝 없는 뽑기 기계<\/h1><div class="gacha-machine"><\/div><button id="gacha-button" class="gacha-button">뽑기!<\/button><div id="gacha-ball"><\/div><\/div><script>const items=['1등 상품: 멋진 상품','2등 상품: 상품권','3등 당첨: 할인쿠폰','4등 당첨: 작은 선물','5등 당첨: 커피 쿠폰','축하합니다! 사탕 획득','특별상: 초콜릿 교환권','행운상: 마이쮸','행복상: 젤리','대박상: 과자 세트','아이템 1','아이템 2','아이템 3','아이템 4','아이템 5','아이템 6','아이템 7','아이템 8','아이템 9','아이템 10','아이템 11','아이템 12','아이템 13','아이템 14','아이템 15','아이템 16','아이템 17','아이템 18','아이템 19','아이템 20','아이템 21','아이템 22','아이템 23'];const ballColors=['#ff6347','#ffb6c1','#add8e6','#90ee90','#ffa07a','#c0c0c0','#d8bfd8','#f0e68c'];const synth=new Tone.NoiseSynth({noise:{type:"brown"},envelope:{attack:.02,decay:.2,sustain:.05}}).toDestination();const ball=document.getElementById('gacha-ball'),button=document.getElementById('gacha-button');let isAnimating=!1;async function drawItem(){if(isAnimating)return;isAnimating=!0;await Tone.start();ball.style.backgroundColor=ballColors[Math.floor(Math.random()*ballColors.length)];ball.style.display='flex';ball.innerText='';synth.triggerAttackRelease("3s");ball.classList.remove('animate-ball');void ball.offsetWidth;ball.classList.add('animate-ball');button.disabled=!0;setTimeout(()=>{const selectedItem=items[Math.floor(Math.random()*items.length)];ball.innerText=\`🎉 축하합니다! \${selectedItem} 당첨! 🎉\`;button.disabled=!1;isAnimating=!1},5e3)}button.addEventListener('click',drawItem);ball.addEventListener('click',()=>{if(!isAnimating)ball.style.display='none'});<\/script><\/body><\/html>`;
             
             // DOM Elements
